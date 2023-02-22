@@ -14,14 +14,16 @@
 		"server": "node ./server/build/index.js",
 		"kill": "npm --prefix ../common/ run kill",
 		"setup": "cd ../../ && npm install && cd how-to/use-notifications && npm run build && npm --prefix ../common/ run build",
-		"validate": "npm --prefix ../../ run validate"
+		"validate": "npm --prefix ../../ run validate",
+		"test": "xo"
 	},
 	"author": "martyn.janes@openfin.co",
 	"license": "SEE LICENSE IN LICENSE.MD",
 	"dependencies": {
 		"@openfin/core": "^28.72.17",
 		"@openfin/workspace": "10.3.10",
-		"csstype": "^3.1.1"
+		"csstype": "^3.1.1",
+		"launchdarkly-js-client-sdk": "^3.1.1"
 	},
 	"devDependencies": {
 		"@types/express": "^4.17.14",
@@ -30,6 +32,7 @@
 		"ts-loader": "^9.4.2",
 		"typescript": "^4.9.3",
 		"webpack": "^5.75.0",
-		"webpack-cli": "^5.0.0"
+		"webpack-cli": "^5.0.0",
+		"xo": "^0.53.1"
 	}
 }

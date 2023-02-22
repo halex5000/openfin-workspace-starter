@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/quotes */
+/* eslint-disable linebreak-style */
 import {
 	ActionBodyClickType,
 	addEventListener as addNotificationEventListener,
@@ -16,8 +19,10 @@ import {
 	VERSION
 } from "@openfin/workspace/notifications";
 import type * as CSS from "csstype";
+import * as LDClient from 'launchdarkly-js-client-sdk';
 import { addEventListener as providerEventListener } from "./provider-event-listener";
 import { randomUUID } from "./uuid";
+// Using TypeScript imports
 
 let loggingElement: HTMLElement;
 const updatableNotifications = {};
@@ -26,12 +31,39 @@ let activePlatform;
 let connected = false;
 let connectedVersion = "";
 
+const context = {
+  kind: 'user',
+  key: 'context-key-123abc'
+};
+
+let client: any;
+
+let isNotificationEditorEnabled = false;
+
+
 window.addEventListener("DOMContentLoaded", async () => {
 	console.log("Script loaded");
-
+	await initLaunchDarkly();
 	await initDom();
 	await initListener();
 });
+
+async function initLaunchDarkly() {
+	client = LDClient.initialize('62acb4750615bf1497433394', context);
+
+	await client.waitUntilReady();
+
+	client.on('change', () => {
+		isNotificationEditorEnabled = client.variation('example-flag-key', false);
+		const btnNotificationStudioOpen: HTMLButtonElement = document.querySelector("#btnNotificationStudioOpen");
+		btnNotificationStudioOpen.style.visibility = isNotificationEditorEnabled ? 'visible' : 'hidden';
+		loggingAddEntry(`notification studio visibility changed to: ${isNotificationEditorEnabled}`);
+
+		const backgroundColor = client.variation('background-color', '#282828');
+		loggingAddEntry(`background color changed to ${backgroundColor}`);
+		document.querySelector('body').style.backgroundColor = backgroundColor;
+	});
+}
 
 async function initDom() {
 	loggingElement = document.querySelector("#logging");
@@ -120,6 +152,7 @@ async function initDom() {
 	});
 
 	const btnNotificationStudioOpen: HTMLButtonElement = document.querySelector("#btnNotificationStudioOpen");
+	btnNotificationStudioOpen.style.visibility = isNotificationEditorEnabled ? 'visible' : 'hidden';
 	btnNotificationStudioOpen.addEventListener("click", async () => {
 		try {
 			btnNotificationStudioOpen.disabled = true;
