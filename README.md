@@ -5,10 +5,100 @@
 
 ## OpenFin Workspace 10.0.0
 
-The OpenFin Workspace is a full-featured work environment designed to improve the way you get t`hings done. Built on a secure browsing experience powered by Chromium, the core offering includes a smart digital assistant, a powerful web browser built to support modern application workflows out-of-the-box, a store to aid in the discovery of content and a notification system to surface important moments while they're still important.
+The OpenFin Workspace is a full-featured work environment designed to improve the way you get things done. Built on a secure browsing experience powered by Chromium, the core offering includes a smart digital assistant, a powerful web browser built to support modern application workflows out-of-the-box, a store to aid in the discovery of content and a notification system to surface important moments while they're still important.
 
 [Learn more about openfin.co/workspace](https://www.openfin.co/workspace/)
 
+# High level getting started with OpenFin and LaunchDarkly
+
+## Prerequisites
+
+Windows 10+ only (for now)
+Node.js 16+ installed 
+
+## Getting Started
+
+### 1. Clone
+```
+git clone https://github.com/halex5000/openfin-workspace-starter
+```
+
+```powershell
+cd openfin-workspace-starter
+cd how-to\use-notifications
+```
+
+### 2. Setup 
+
+Open `client\src\notifications.ts` and change the SDK key to your own Client-side SDK key on line 52
+Additionally, create a feature flag in LaunchDarkly called `background-color`
+This feature flag is a multivariate flag serving the hex codes for colors that style the background of the openfin application.
+
+(do this before you run setup, the code is built in the next step)
+We would typically do this in an environment variable, but given this is a POC, we took the shortest path to done
+
+```
+# be patient, install may take a bit
+npm run setup
+```
+
+assuming you don't have any errors, you should be able to run the following in separate terminals
+
+```powershell
+# this terminal will hang while the server runs
+# you'll run the next command to start the client in another Powershell window
+# when you're done with this server, you'll CMD+C or Ctrl+C to stop the server
+npm run server
+```
+
+```powershell
+# this terminal will hang while the client is open
+# close the client with the X and this will terminate the process in the terminal
+npm run client
+```
+
+### 3. Flagging 
+
+This application should now be open, although it won't come to the foreground, find it in the taskbar at the bottom of your screen
+# 
+## Before changing the feature flag value
+
+![Opening screenshot of our OpenFin app](assets/OpenFin%20opening%20screenshot.png)
+> opening screenshot of our openfin app
+
+# 
+
+## Changing the color setting in LaunchDarkly:
+
+![Setting background color in LaunchDarkly](assets/LaunchDarkly%20Background%20Color.png)
+> screenshot of LaunchDarkly color setting where the color code is #A34FDE
+
+#
+
+## After changing the feature flag value
+Yields the following change in the OpenFin application
+![Updated color of the OpenFin app](assets/OpenFin%20Color%20Change%20Screenshot.png)
+
+# 
+## Conclusion
+Because LaunchDarkly has well-established practices and tools for integrating into client-side applications built in Vanilla JavaScript, Vue, and React, integrating with OpenFin is easy and well-supported by our ecosystems.
+
+Because OpenFin applications are designed to be online applications, this should also be a natural fit to integrate LaunchDarkly with a desktop application because we can expect a connection to the internet to be stable and available.
+
+
+
+
+
+
+#
+#
+#
+#
+#
+#
+#
+
+------ ORIGINAL OPENFIN CONTENT ----------
 ## What version does this branch cover?
 
 This branch covers version **10.0.0** of OpenFin Workspace (there are versioned branches for other releases). [Click here to visit the release notes.](https://developer.openfin.co/versions/?product=Runtime#/?product=Workspace&sub-product=Workspace&version=10.3.10)
